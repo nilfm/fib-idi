@@ -14,6 +14,6 @@ int main (int argc, char **argv)
   MyForm myf;
   myf.show();
 
-  return a.exec ();
+  return a.exec();
 }
 
