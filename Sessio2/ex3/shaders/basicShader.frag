@@ -7,18 +7,18 @@ void main() {
     
 	if (gl_FragCoord.x < 354.0) {
 		if (gl_FragCoord.y < 354.0) {
-			FragColor = vec4(1, 1, 0, 1);
+			FragColor = vec4(255, 255, 0, 1);
 		}
 		else {
-			FragColor = vec4(1, 0, 0, 1);
+			FragColor = vec4(255, 0, 0, 1);
 		}
 	}
 	else {
 		if (gl_FragCoord.y < 354.0) {
-			FragColor = vec4(0, 1, 0, 1);
+			FragColor = vec4(0, 255, 0, 1);
 		}
 		else {
-			FragColor = vec4(0, 0, 1, 1);
+			FragColor = vec4(0, 0, 255, 1);
 		}
 	}
 }
