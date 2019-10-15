@@ -40,19 +40,7 @@ void MyGLWidget::paintGL ()
   glClear (GL_COLOR_BUFFER_BIT);  
 
   // Viewport 1
-  glViewport (0, 0, ample/2, alt/2);
-
-  // Activem l'Array a pintar i pintem l'escena (VAOs 1 i 2)
-  glBindVertexArray(VAO1);
-  glDrawArrays(GL_TRIANGLES, 0, 12);
-  
-  glBindVertexArray(VAO2);
-  glDrawArrays(GL_TRIANGLES, 0, 3);
-  
-  
-  
-  // Viewport 2
-  glViewport (ample/2, alt/2, ample/2, alt/2);
+  glViewport (0, 0, ample, alt);
 
   // Activem l'Array a pintar i pintem l'escena (VAOs 1 i 2)
   glBindVertexArray(VAO1);
