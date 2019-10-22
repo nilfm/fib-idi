@@ -25,17 +25,18 @@ void MyGLWidget::initializeGL ()
   creaBuffers();
   glEnable(GL_DEPTH_TEST);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  min_scene = glm::vec3(-1, -1, -1);
-  max_scene = glm::vec3(1, 1, 1);
+  min_scene = glm::vec3(-2.5, 0, -2.5);
+  max_scene = glm::vec3(2.5, 4.0, 2.5);
   calcCenterRadius();
+  calcModelBox();
   iniCamera();
 }
 
 void MyGLWidget::iniCamera() {
 	dist = radius*2.0;
 	
-	OBS = glm::vec3(0, 0, dist);
-	VRP = glm::vec3(0, 0, 0);
+	OBS = glm::vec3(0, 2.0, dist);
+	VRP = glm::vec3(center);
 	VUP = glm::vec3(0, 1, 0);
 	viewTransform();
 	
@@ -49,35 +50,27 @@ void MyGLWidget::iniCamera() {
 
 void MyGLWidget::paintGL () 
 {
-// Aquest codi és necessari únicament per a MACs amb pantalla retina.
-#ifdef __APPLE__
-  GLint vp[4];
-  glGetIntegerv (GL_VIEWPORT, vp);
-  ample = vp[2];
-  alt = vp[3];
-#endif
-
 // En cas de voler canviar els paràmetres del viewport, descomenteu la crida següent i
 // useu els paràmetres que considereu (els que hi ha són els de per defecte)
 //  glViewport (0, 0, ample, alt);
   
   // Esborrem el frame-buffer
-  glClear (GL_COLOR_BUFFER_BIT);
+  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  // Activem el VAO per a pintar la caseta 
+  glBindVertexArray(VAO_Model);
 
   // Carreguem la transformació de model
   modelTransform(false);
   projectTransform();
   viewTransform();
 
-  // Activem el VAO per a pintar la caseta 
-  glBindVertexArray(VAO_Homer);
-
   // pintem
   glDrawArrays(GL_TRIANGLES, 0, m.faces().size()*3);
 
-  modelTransform(true);
 
   glBindVertexArray(VAO_Terra);
+  modelTransform(true);
   glDrawArrays(GL_TRIANGLES, 0, 6);
 
   glBindVertexArray (0);
@@ -87,16 +80,19 @@ void MyGLWidget::modelTransform(bool terra)
 {
   // Matriu de transformació de model
   glm::mat4 transform (1.0f);
-  if (not terra) transform = glm::rotate(transform, angle, glm::vec3(0, 1, 0));
-  transform = glm::scale(transform, glm::vec3(scale));
+  if (not terra) {
+	  transform = glm::rotate(transform, angle, glm::vec3(0, 1, 0));
+	  transform = glm::scale(transform, glm::vec3(scale));
+	  transform = glm::scale(transform, glm::vec3(scale2));
+	  transform = glm::translate(transform, -patricio_center_base);
+  }
+  else {
+	transform = glm::scale(transform, glm::vec3(scale));
+  }
   glUniformMatrix4fv(transLoc, 1, GL_FALSE, &transform[0][0]);
 }
 
 void MyGLWidget::projectTransform() {
-	std::cout << "fov: " << fov << std::endl;
-	std::cout << "raw: " << ra << std::endl;
-	std::cout << "znear: " << znear << std::endl;
-	std::cout << "zfar: " << zfar << std::endl;
 	//Arguments: FOV (radians), aspect ratio window, znear, zfar
 	glm::mat4 Proj = glm::perspective(fov, ra, znear, zfar);
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, &Proj[0][0]);
@@ -138,6 +134,8 @@ void MyGLWidget::calcModelBox() {
   std::cout << std::endl << 
   "MIN(x,y,z) = (" << minx << "," << miny << "," << minz << ")" << std::endl <<
   "MAX(x,y,z) = (" << maxx << "," << maxy << "," << maxz << ")" << std::endl;
+   scale2 = 4.0/(maxy-miny);
+   patricio_center_base = glm::vec3((minx+maxx)/2, miny, (minz+maxz)/2);
  }
 
 void MyGLWidget::resizeGL (int w, int h) 
@@ -172,31 +170,34 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)
 
 void MyGLWidget::creaBuffers () 
 {
-  m.load("../../models/HomerProves.obj");
+  m.load("../../models/Patricio.obj");
 
-  glGenVertexArrays(1, &VAO_Homer);
-  glBindVertexArray(VAO_Homer);
+  glGenVertexArrays(1, &VAO_Model);
+  glBindVertexArray(VAO_Model);
 
-  GLuint VBO_Homer[2];
-  glGenBuffers(2, VBO_Homer);
-  glBindBuffer(GL_ARRAY_BUFFER, VBO_Homer[0]);
+  GLuint VBO_Model_Pos;
+  glGenBuffers(1, &VBO_Model_Pos);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO_Model_Pos);
   glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*m.faces().size()*3*3, m.VBO_vertices(), GL_STATIC_DRAW);
   glVertexAttribPointer(vertexLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(vertexLoc);
 
-  glBindBuffer(GL_ARRAY_BUFFER, VBO_Homer[1]);
+  GLuint VBO_Model_Col;
+  glGenBuffers(1, &VBO_Model_Col);
+
+  glBindBuffer(GL_ARRAY_BUFFER, VBO_Model_Col);
   glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*m.faces().size()*3*3, m.VBO_matdiff(), GL_STATIC_DRAW);
   glVertexAttribPointer(colorLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(colorLoc); 
 
   glm::vec3 posicio[6] = {
-	glm::vec3(1.0, -1.0, 1.0),
-	glm::vec3(1.0, -1.0, -1.0),
-	glm::vec3(-1.0, -1.0, -1.0),
+	glm::vec3(2.5, 0, 2.5),
+	glm::vec3(2.5, 0, -2.5),
+	glm::vec3(-2.5, 0, -2.5),
 	
-	glm::vec3(1.0, -1.0, 1.0),
-	glm::vec3(-1.0, -1.0, -1.0),
-	glm::vec3(-1.0, -1.0, 1.0)
+	glm::vec3(2.5, 0, 2.5),
+	glm::vec3(-2.5, 0, -2.5),
+	glm::vec3(-2.5, 0, 2.5)
   }; 
    glm::vec3 color[6] = {
 	glm::vec3(1,0,0),
@@ -211,18 +212,18 @@ void MyGLWidget::creaBuffers ()
   glGenVertexArrays(1, &VAO_Terra);
   glBindVertexArray(VAO_Terra);
   
-  GLuint VBO_TerraPos;
-  glGenBuffers(1, &VBO_TerraPos);
-  glBindBuffer(GL_ARRAY_BUFFER, VBO_TerraPos);
+  GLuint VBO_Terra_Pos;
+  glGenBuffers(1, &VBO_Terra_Pos);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO_Terra_Pos);
   glBufferData(GL_ARRAY_BUFFER, sizeof(posicio), posicio, GL_STATIC_DRAW);
   
   // Activem l'atribut vertexLoc
   glVertexAttribPointer(vertexLoc, 3, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(vertexLoc);
   
-  GLuint VBO_TerraCol;
-  glGenBuffers(1, &VBO_TerraCol);
-  glBindBuffer(GL_ARRAY_BUFFER, VBO_TerraCol);
+  GLuint VBO_Terra_Col;
+  glGenBuffers(1, &VBO_Terra_Col);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO_Terra_Col);
   glBufferData(GL_ARRAY_BUFFER, sizeof(color), color, GL_STATIC_DRAW);
 
   // Activem l'atribut colorLoc

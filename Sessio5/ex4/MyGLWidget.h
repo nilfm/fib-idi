@@ -44,18 +44,18 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     GLuint projLoc;
     GLuint viewLoc;
     // VAO i VBO names
-    GLuint VAO_Homer, VAO_Terra;
+    GLuint VAO_Model, VAO_Terra;
     // Program
     QOpenGLShaderProgram *program;
     // Viewport
     GLint ample, alt;
     // Internal vars
     Model m;
-    float scale, angle;
+    float scale, scale2, angle;
     float fov, fov_ini, ra, znear, zfar;
     glm::vec3 OBS, VRP, VUP;
     glm::vec3 pos;
-    glm::vec3 center;
+    glm::vec3 center, patricio_center_base;
     float radius, dist;
     glm::vec3 min_scene, max_scene;
 };
