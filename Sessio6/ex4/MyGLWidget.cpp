@@ -70,6 +70,8 @@ void MyGLWidget::paintGL ()
   viewTransform();
 
   // pintem
+  viewTransform();
+  projectTransform();
   modelTransform(false, 0);
   glDrawArrays(GL_TRIANGLES, 0, m.faces().size()*3);
   modelTransform(false, 1);
@@ -84,7 +86,7 @@ void MyGLWidget::paintGL ()
   glBindVertexArray (0);
 }
 
-void MyGLWidget::modelTransform(bool terra, int num_patricio) 
+void MyGLWidget::modelTransformPatricio() 
 {
   // Matriu de transformació de model
 	glm::mat4 transform (1.0f);

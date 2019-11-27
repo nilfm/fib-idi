@@ -26,20 +26,14 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     virtual void resizeGL (int width, int height);
     // keyPressEvent - Es cridat quan es prem una tecla
     virtual void keyPressEvent (QKeyEvent *event);
-	virtual void mousePressEvent(QMouseEvent *e);
-	virtual void mouseReleaseEvent(QMouseEvent *e);
-	virtual void mouseMoveEvent(QMouseEvent *e); 
-  
+
   private:
     void creaBuffers();
     void carregaShaders();
-    void modelTransformTerra();
-    void modelTransformPatricio();
+    void modelTransform(bool terra);
     void projectTransform();
     void viewTransform();
     void iniCamera();
-    void calcCenterRadius();
-	void calcModelBox();
 
     // attribute locations
     GLuint vertexLoc, colorLoc;
@@ -48,22 +42,16 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     GLuint projLoc;
     GLuint viewLoc;
     // VAO i VBO names
-    GLuint VAO_Model, VAO_Terra;
+    GLuint VAO_Homer, VAO_Terra;
     // Program
     QOpenGLShaderProgram *program;
     // Viewport
     GLint ample, alt;
     // Internal vars
     Model m;
-    GLint mousePos[2];
-    float scale, scale2, angle;
-    float fov, fov_ini, ra, znear, zfar;
+    float scale, angle;
+    float fov, ra, znear, zfar;
     glm::vec3 OBS, VRP, VUP;
     glm::vec3 pos;
-    glm::vec3 center, patricio_center_base;
-    float radius, dist;
-    float psi, theta, phi;
-    glm::vec3 min_scene, max_scene;
-    bool perspective;
 };
 
