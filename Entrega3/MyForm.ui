@@ -17,7 +17,7 @@
    <item>
     <widget class="MyLabel" name="label_3">
      <property name="styleSheet">
-      <string notr="true">background-color: &quot;red&quot;;</string>
+      <string notr="true">background-color: &quot;yellow&quot;;</string>
      </property>
      <property name="text">
       <string/>
@@ -29,12 +29,16 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Password</string>
+        <string>Password                 </string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="lineEdit">
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -43,17 +47,21 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Repeat Password</string>
+        <string>Repeat Password   </string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_2"/>
+      <widget class="QLineEdit" name="lineEdit_2">
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="MyLabel" name="label_4">
+    <widget class="QLabel" name="label_4">
      <property name="text">
       <string/>
      </property>
@@ -135,127 +143,15 @@
    <extends>QLabel</extends>
    <header>MyLabel.h</header>
    <slots>
+    <signal>changeText(QString)</signal>
     <slot>updatePass1(QString)</slot>
     <slot>updatePass2(QString)</slot>
-    <slot>displayText()</slot>
-    <slot>changeColor()</slot>
+    <slot>emitSignal()</slot>
    </slots>
   </customwidget>
  </customwidgets>
  <resources/>
  <connections>
-  <connection>
-   <sender>lineEdit</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>label_3</receiver>
-   <slot>updatePass1(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>210</x>
-     <y>50</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>170</x>
-     <y>19</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineEdit_2</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>label_3</receiver>
-   <slot>updatePass2(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>205</x>
-     <y>109</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>182</x>
-     <y>17</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineEdit</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>label_3</receiver>
-   <slot>changeColor()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>207</x>
-     <y>48</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>201</x>
-     <y>23</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineEdit_2</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>label_3</receiver>
-   <slot>changeColor()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>228</x>
-     <y>109</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>188</x>
-     <y>17</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineEdit_2</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>label_4</receiver>
-   <slot>updatePass2(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>236</x>
-     <y>99</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>125</x>
-     <y>162</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineEdit</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>label_4</receiver>
-   <slot>updatePass1(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>232</x>
-     <y>54</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>149</x>
-     <y>158</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_2</sender>
-   <signal>clicked()</signal>
-   <receiver>label_4</receiver>
-   <slot>displayText()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>259</x>
-     <y>159</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>142</x>
-     <y>164</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>pushButton</sender>
    <signal>clicked()</signal>
@@ -263,12 +159,108 @@
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>354</x>
-     <y>260</y>
+     <x>454</x>
+     <y>291</y>
     </hint>
     <hint type="destinationlabel">
      <x>352</x>
      <y>187</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>lineEdit_2</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>53</x>
+     <y>265</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>116</x>
+     <y>79</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>lineEdit</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>84</x>
+     <y>271</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>137</x>
+     <y>48</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>label_3</receiver>
+   <slot>updatePass1(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>48</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>159</x>
+     <y>18</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit_2</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>label_3</receiver>
+   <slot>updatePass2(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>260</x>
+     <y>74</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>253</x>
+     <y>9</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>label_3</receiver>
+   <slot>emitSignal()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>221</x>
+     <y>263</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>208</x>
+     <y>14</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>label_3</sender>
+   <signal>changeText(QString)</signal>
+   <receiver>label_4</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>240</x>
+     <y>9</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>216</x>
+     <y>118</y>
     </hint>
    </hints>
   </connection>

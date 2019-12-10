@@ -9,15 +9,17 @@ MyLabel::MyLabel(QWidget* parent) : QLabel(parent) {
 void MyLabel::updatePass1(QString str) {
     pass1 = str;
     calcColor();
+    changeColor(); 
 }
 
 void MyLabel::updatePass2(QString str) {
     pass2 = str;
     calcColor();
+    changeColor();
 }
 
-void MyLabel::displayText() {
-    setText(obtainText());
+void MyLabel::emitSignal() {
+	emit changeText(obtainText());
 }
 
 void MyLabel::changeColor() {
