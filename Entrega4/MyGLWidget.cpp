@@ -239,8 +239,13 @@ void MyGLWidget::keyPressEvent(QKeyEvent* event)  // Cal modificar aquesta funci
   update();
 }
 
-void MyGLWidget::changeMode() {
-	mode = !mode;
+void MyGLWidget::setObserverMode() {
+	mode = false;
+	update();
+}
+
+void MyGLWidget::setSceneMode() {
+	mode = true;
 	update();
 }
 

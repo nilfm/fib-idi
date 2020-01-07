@@ -16,7 +16,6 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -30,8 +29,6 @@ public:
     QHBoxLayout *horizontalLayout;
     MyGLWidget *widget;
     QVBoxLayout *verticalLayout;
-    QRadioButton *radioButton;
-    QRadioButton *radioButton_2;
     QSpacerItem *verticalSpacer;
     QPushButton *pushButton;
 
@@ -54,17 +51,6 @@ public:
 
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        radioButton = new QRadioButton(MyForm);
-        radioButton->setObjectName(QStringLiteral("radioButton"));
-        radioButton->setChecked(true);
-
-        verticalLayout->addWidget(radioButton);
-
-        radioButton_2 = new QRadioButton(MyForm);
-        radioButton_2->setObjectName(QStringLiteral("radioButton_2"));
-
-        verticalLayout->addWidget(radioButton_2);
-
         verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer);
@@ -85,19 +71,13 @@ public:
 
         retranslateUi(MyForm);
         QObject::connect(pushButton, SIGNAL(clicked()), MyForm, SLOT(close()));
-        QObject::connect(radioButton, SIGNAL(clicked()), widget, SLOT(changeMode()));
-        QObject::connect(radioButton_2, SIGNAL(clicked()), widget, SLOT(changeMode()));
-        QObject::connect(widget, SIGNAL(observer()), radioButton, SLOT(toggle()));
-        QObject::connect(widget, SIGNAL(scene()), radioButton_2, SLOT(toggle()));
 
         QMetaObject::connectSlotsByName(MyForm);
     } // setupUi
 
     void retranslateUi(QWidget *MyForm)
     {
-        MyForm->setWindowTitle(QApplication::translate("MyForm", "IDI-Lab", Q_NULLPTR));
-        radioButton->setText(QApplication::translate("MyForm", "Observer", Q_NULLPTR));
-        radioButton_2->setText(QApplication::translate("MyForm", "Scene", Q_NULLPTR));
+        MyForm->setWindowTitle(QApplication::translate("MyForm", "Form", Q_NULLPTR));
         pushButton->setText(QApplication::translate("MyForm", "&Sortir", Q_NULLPTR));
     } // retranslateUi
 

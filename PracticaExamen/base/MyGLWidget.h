@@ -17,14 +17,7 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
   public:
     MyGLWidget (QWidget *parent=0);
     ~MyGLWidget ();
-  
-  public slots:
-    void setObserverMode();
-    void setSceneMode();
-  signals:
-    void scene();
-    void observer();
-  
+
   protected:
     // initializeGL - Aqui incluim les inicialitzacions del contexte grafic.
     virtual void initializeGL ( );
@@ -43,52 +36,41 @@ class MyGLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 
   private:
     void creaBuffersPatricio ();
-    void creaBuffersTerra ();
-    void creaBuffersPilota ();
+    void creaBuffersTerraIParet ();
     void carregaShaders ();
+    void iniEscena ();
+    void iniCamera ();
     void projectTransform ();
     void viewTransform ();
     void modelTransformTerra ();
-    void modelTransformParet1 ();
-    void modelTransformParet2 ();
     void modelTransformPatricio ();
-    void modelTransformPilota ();
     void calculaCapsaModel (Model &p, float &escala, glm::vec3 &centreBase);
-    void iniEscena ();
-    void iniCamera ();
 
-	void transformFocus();
-	void normalMatrix();
-    void iniFocus ();
-    void posicionaFocus ();
-
-    // VAO names
-    GLuint VAO_Patr, VAO_Terra, VAO_Pil;
+    // VAO i VBO names
+    GLuint VAO_Patr;
+    GLuint VAO_Terra;
     // Program
     QOpenGLShaderProgram *program;
     // uniform locations
-    GLuint transLoc, projLoc, viewLoc, posFLoc, NMLoc;
+    GLuint transLoc, projLoc, viewLoc;
     // attribute locations
     GLuint vertexLoc, normalLoc, matambLoc, matdiffLoc, matspecLoc, matshinLoc;
 
     GLint ample, alt;
-	bool mode;
-	
+
     // model
-    Model patr, pil;
+    Model patr;
     // paràmetres calculats a partir de la capsa contenidora del model
-    glm::vec3 centreBasePat, centreBasePil, posPilota;
-    float escalaPat, escalaPil;
+    glm::vec3 centreBasePat;
+    float escalaPat;
 
-    glm::mat4 TG, View, Proj;
-
-    glm::vec3 centreEsc, posFocus;
+    glm::vec3 centreEsc;
     float radiEsc, ra, fov, zn, zf;
-
-    float angleX, angleY;
 
     typedef  enum {NONE, ROTATE} InteractiveAction;
     InteractiveAction DoingInteractive;
     int xClick, yClick;
+    float angleY, angleX;
+    bool perspectiva;
 };
 
